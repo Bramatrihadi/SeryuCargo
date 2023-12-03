@@ -1,8 +1,12 @@
-import React from 'react'
+import Navbar from "../components/Navbar"
+
+
 
 const WatchList = () => {
   return (
-    <div>WatchList</div>
+    <>
+    <Navbar/>
+    </>
   )
 }
 

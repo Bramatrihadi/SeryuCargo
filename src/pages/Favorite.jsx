@@ -1,7 +1,10 @@
+import Navbar from "../components/Navbar"
 
 const Favorite = () => {
   return (
-    <div><h1>TESANSDOIAIDWOIANDIOAN</h1></div>
+    <>
+    <Navbar/>
+    </>
   )
 }
 

@@ -1,34 +1,53 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AuthComponent from "../auth/AuthComponent";
+import { useNavigate } from "react-router-dom";
 
 
 const Navbar = () => {
   const [showLoginPopup, setShowLoginPopup] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
-  const handleFavoriteClick = () => {
-    // Show the login popup (modal)
-    setShowLoginPopup(true);
-  };
+  useEffect(() => {
+    // eslint-disable-next-line no-undef
+    const storedLoginStatus = localStorage.getItem("isLoggedIn");
+    if (storedLoginStatus) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
-  const handleWatchlistClick = () => {
-    // Show the login popup (modal)
+  const openLoginPopup = () => {
     setShowLoginPopup(true);
   };
 
   const closeLoginPopup = () => {
-    // Close the login popup
     setShowLoginPopup(false);
   };
 
-  const handleLogin = (loggedIn) => {
-    setIsLoggedIn(loggedIn);
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+    // eslint-disable-next-line no-undef
+    localStorage.setItem("isLoggedIn", "true"); // Store login status in localStorage
+    closeLoginPopup();
   };
 
   const handleLogout = () => {
     setIsLoggedIn(false);
+    // eslint-disable-next-line no-undef
+    localStorage.removeItem("isLoggedIn"); // Remove login status from localStorage
   };
 
+  const navigateToHomepage = () => {
+    navigate("/");
+  }
+
+  const navigateToFavorite = () => {
+    navigate("/favorite");
+  };
+
+  const navigateToWatchlist = () => {
+    navigate("/watchlist");
+  };
   return (
     <div className="navbar bg-primary text-white">
       <div className="navbar-start">
@@ -51,16 +70,16 @@ const Navbar = () => {
           </div>
           <ul className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-primary rounded-box w-52 font-roboto font-normal">
             <li>
-              <a onClick={handleFavoriteClick}>Favorite</a>
+              <a onClick={isLoggedIn ? navigateToFavorite : openLoginPopup}>Favorite</a>
             </li>
             <li>
-              <a onClick={handleWatchlistClick}>Watchlist</a>
+              <a onClick={isLoggedIn ? navigateToWatchlist : openLoginPopup}>Watchlist</a>
             </li>
           </ul>
         </div>
         <a
           className="btn btn-ghost xl:text-4xl lg:text-xl md:text-md sm:text-sm font-poppins"
-          style={{ letterSpacing: "1rem", fontWeight: "900" }}
+          style={{ letterSpacing: "1rem", fontWeight: "900" }} onClick={navigateToHomepage}
         >
           CINEMA
         </a>
@@ -68,10 +87,10 @@ const Navbar = () => {
       <div className="navbar-end hidden lg:flex">
         <ul className="menu menu-horizontal font-roboto font-normal text-xl">
           <li>
-            <a onClick={handleFavoriteClick}>Favorite</a>
+            <a onClick={isLoggedIn ? navigateToFavorite : openLoginPopup}>Favorite</a>
           </li>
           <li>
-            <a onClick={handleWatchlistClick}>Watchlist</a>
+            <a onClick={isLoggedIn ? navigateToWatchlist : openLoginPopup}>Watchlist</a>
           </li>
         </ul>
       </div>
@@ -102,8 +121,9 @@ const Navbar = () => {
         <div className="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-8 rounded-md">
             <AuthComponent
-              closeLoginPopup={closeLoginPopup}
-              onLogin={handleLogin}
+              closeLoginPopup={closeLoginPopup} 
+              onLogin={handleLogin} 
+              onLogout={handleLogout}
             />
             <button onClick={closeLoginPopup} className="mt-4 btn btn-primary">
               Close

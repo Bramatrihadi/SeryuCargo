@@ -1,7 +1,7 @@
+/* eslint-disable no-unused-vars */
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { getRequestToken, getAccessToken } from "../apis/api";
-
 
 const webHost = import.meta.env.VITE_APP_WEBHOST;
 const token = import.meta.env.VITE_APP_TOKEN;
@@ -12,14 +12,7 @@ const AuthComponent = ({ closeLoginPopup, onLogin, onLogout }) => {
   const [accountId, setAccountId] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const hideAccountData = () => {
-    setAccountId("");
-    setAccessToken("");
-  };
-
   const getRequestTokenHandler = async () => {
-    hideAccountData();
-
     try {
       const response = await getRequestToken(`${token}`);
 
@@ -57,45 +50,23 @@ const AuthComponent = ({ closeLoginPopup, onLogin, onLogout }) => {
     }
   };
 
-  const handleLogout = () => {
-    hideAccountData();
-    setRequestToken("");
-    setAccessToken("");
-    setIsLoggedIn(false);
-
-    onLogout();
-  };
-
   return (
     <div>
-      {!isLoggedIn ? (
-        <div className="flex justify-center items-center">
-          <button
-            className="mr-5 btn btn-primary"
-            onClick={getRequestTokenHandler}
-          >
-            Request Token
-          </button>
-          <button
-            className="btn btn-primary"
-            onClick={getAccessTokenHandler}
-            disabled={!requestToken}
-          >
-            Login
-          </button>
-        </div>
-      ) : (
-        <div>
-          <p>You are logged in!</p>
-          <button onClick={handleLogout}>Logout</button>
-        </div>
-      )}
-      {isLoggedIn && (
-        <div id="account_info text-black">
-          <div>Access Token: {accessToken}</div>
-          <div>Account ID: {accountId}</div>
-        </div>
-      )}
+      <div className="flex justify-center items-center">
+        <button
+          className="mr-5 btn btn-primary"
+          onClick={getRequestTokenHandler}
+        >
+          Request Token
+        </button>
+        <button
+          className="btn btn-primary"
+          onClick={getAccessTokenHandler}
+          disabled={!requestToken}
+        >
+          Login
+        </button>
+      </div>
     </div>
   );
 };

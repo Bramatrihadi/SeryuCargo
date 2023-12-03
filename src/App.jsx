@@ -6,13 +6,16 @@ import WatchList from "./pages/WatchList"
 
 function App() {
   return (
+
+
     <Router>
       <Routes>
-        <Route path="/favorite" element={Favorite} />
-        <Route path="/watchlist" element={WatchList} />
+        <Route path="/favorite" element={<Favorite/>} />
+        <Route path="/watchlist" element={<WatchList/>} />
         <Route path="/" element={<LandingPage />} />
       </Routes>
     </Router>
+
   );
 }
 
